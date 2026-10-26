@@ -5,7 +5,7 @@ import RevealText from "@/components/RevealText";
 import { site, filled } from "@/content/site";
 
 const pill =
-  "border border-paper px-4 py-2 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red";
+  "inline-flex min-h-11 items-center border border-paper px-4 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);

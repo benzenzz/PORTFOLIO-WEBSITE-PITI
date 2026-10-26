@@ -16,5 +16,6 @@ export function whenLoaderDone(cb: () => void) {
   return () => window.removeEventListener(LOADER_DONE, cb);
 }
 
-// Runs before hydration: first visit in this session with motion allowed → "on", otherwise "off".
-export const loaderGateScript = `try{document.documentElement.dataset.intro=!sessionStorage.getItem("loaderSeen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches?"on":"off"}catch(e){document.documentElement.dataset.intro="off"}`;
+// Runs before hydration: first visit to the home page in this session with motion allowed → "on", otherwise "off".
+// Deep links (case studies) skip the intro so the work shows immediately.
+export const loaderGateScript = `try{document.documentElement.dataset.intro=location.pathname==="/"&&!sessionStorage.getItem("loaderSeen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches?"on":"off"}catch(e){document.documentElement.dataset.intro="off"}`;

@@ -20,7 +20,7 @@ export default function Hero() {
       <Gallery />
       <a
         href="#work"
-        className="self-start border-b border-ink pb-1 text-base uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red"
+        className="flex min-h-11 items-end self-start border-b border-ink pb-1 text-base uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red"
       >
         View selected work ↓
       </a>

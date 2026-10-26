@@ -10,7 +10,7 @@ const LINKS = [
   ["Contact", "/#contact"],
 ];
 
-const linkClass = "uppercase transition-colors duration-[var(--duration-fast)] hover:text-red";
+const linkClass = "inline-flex min-h-11 items-center uppercase transition-colors duration-[var(--duration-fast)] hover:text-red";
 
 export default function Header() {
   const header = useRef<HTMLElement>(null);
@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header
       ref={header}
-      className="site-header fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-paper/90 px-gutter py-3 text-xs backdrop-blur-sm"
+      className="site-header fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-paper/90 px-gutter text-xs backdrop-blur-sm"
     >
       <Link href="/" className={`${linkClass} font-semibold tracking-widest`}>
         Demi Phan
@@ -47,7 +47,7 @@ export default function Header() {
           ))}
         </ul>
       </nav>
-      <button type="button" onClick={() => menu.current?.showModal()} className={`${linkClass} tracking-widest md:hidden`} aria-haspopup="dialog">
+      <button type="button" onClick={() => menu.current?.showModal()} className={`${linkClass} min-w-11 justify-end tracking-widest md:hidden`} aria-haspopup="dialog">
         Menu
       </button>
 

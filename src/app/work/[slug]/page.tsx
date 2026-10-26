@@ -44,7 +44,7 @@ async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params
 
   return (
     <main className="px-gutter py-section">
-      <Link href="/#work" className="text-xs uppercase tracking-widest hover:text-red focus-visible:text-red">
+      <Link href="/#work" className="inline-flex min-h-11 items-center text-xs uppercase tracking-widest hover:text-red focus-visible:text-red">
         ← Back to work
       </Link>
 

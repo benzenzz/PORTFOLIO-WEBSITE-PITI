@@ -41,6 +41,7 @@ export default function RevealText({
       // Reduced motion: no branch matches, so the text is simply shown.
       gsap.matchMedia().add(MOTION_QUERIES.motion, () => {
         SplitText.create(el, {
+          aria: "none", // default "auto" puts aria-label on <p>, which is prohibited; lines/words stay readable as-is
           type: split,
           mask: split,
           autoSplit: true, // re-splits on resize and font load; returned tween keeps its progress

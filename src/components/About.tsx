@@ -40,10 +40,10 @@ export default function About() {
           <List title="Tools" items={site.tools} />
           <div>
             <h3 className={label}>Websites</h3>
-            <ul className="mt-3 flex flex-col gap-1">
+            <ul className="mt-1 flex flex-col">
               {site.sites.map(([name, url]) => (
                 <li key={url}>
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="border-b border-ink hover:border-red hover:text-red">
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-block py-3 underline decoration-ink underline-offset-4 hover:text-red hover:decoration-red">
                     {name} ↗<span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
