@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Anton, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import Loader from "@/components/Loader";
+import { loaderGateScript } from "@/lib/loader";
 
 // Anton: heavy, tall, condensed grotesque — matches the poster-like headlines of the moodboard;
 // has Vietnamese glyphs. Inter: neutral, highly legible UI/body face that stays out of the work's way.
@@ -15,8 +17,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${anton.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: loaderGateScript }} />
+      </head>
       <body>
+        <Loader />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

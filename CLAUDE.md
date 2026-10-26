@@ -232,3 +232,12 @@ When choosing between two implementation options, prioritize in this order:
 5. **Novelty** — experimental ideas are welcome only when they do not weaken the first four priorities.
 
 The target is not “maximum animation.” The target is a memorable, art-directed portfolio that feels alive while remaining clear, fast, accessible, and friendly.
+
+## 13. Token budget
+
+- Do not open files in `reference/` or `content-raw/` unless the owner names the specific file.
+- Use `content-raw/INVENTORY.md` to learn what assets exist.
+- Do not read `node_modules/`, `.next/`, or saved HTML pages.
+- Read only the files you need to change.
+- Keep replies short; do not repeat code already written.
+- When a phase is done, commit and stop.

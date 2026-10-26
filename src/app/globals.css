@@ -65,3 +65,21 @@ body {
     --duration-slow: 0.01ms;
   }
 }
+
+/* Loader: hidden unless the gate script in layout.tsx opted in, so it never shows without JS. */
+.loader {
+  display: none;
+}
+html[data-loader] .loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--space-gutter);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  clip-path: inset(0 0 0 0);
+  pointer-events: none; /* never blocks clicks or scrolling underneath */
+}
