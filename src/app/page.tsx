@@ -1,4 +1,5 @@
 import { projects } from "@/content/projects";
+import Reveal from "@/components/Reveal";
 
 export default function Home() {
   return (
@@ -17,6 +18,14 @@ export default function Home() {
           </li>
         ))}
       </ul>
+
+      {/* DEMO Phase 2 — remove later */}
+      {["Scroll", "Reveal", "Motion", "Test", "End"].map((word) => (
+        <Reveal key={word} className="flex min-h-[70vh] flex-col justify-center">
+          <p className="text-xs uppercase tracking-widest text-gray">Demo block</p>
+          <p className="font-display text-display-xl uppercase leading-[0.9]">{word}</p>
+        </Reveal>
+      ))}
     </main>
   );
 }
