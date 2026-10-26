@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  /* Color */
+  --color-ink: #101010;
+  --color-paper: #f5f4f0;
+  --color-red: #ff343b;
+  --color-gray: #6b6b6b; /* #777 is 4.2:1 on paper; darkened to pass AA (≈5.1:1) for body-size metadata */
+  --color-line: rgba(16, 16, 16, 0.16);
+
+  /* Type scale */
+  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --text-display-md: clamp(2.5rem, 1.5rem + 5vw, 6rem);
+  --text-display-xl: clamp(4rem, 1rem + 15vw, 14rem);
+
+  /* Spacing */
+  --space-gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --space-section: clamp(4rem, 2rem + 10vw, 10rem);
+
+  /* Motion */
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 640ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-red: var(--color-red);
+  --color-gray: var(--color-gray);
+  --color-line: var(--color-line);
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --text-xs: var(--text-xs);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-display-md: var(--text-display-md);
+  --text-display-xl: var(--text-display-xl);
+  --spacing-gutter: var(--space-gutter);
+  --spacing-section: var(--space-section);
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-base: 0.01ms;
+    --duration-slow: 0.01ms;
+  }
+}

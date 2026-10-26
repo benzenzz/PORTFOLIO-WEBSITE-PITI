@@ -1,0 +1,51 @@
+﻿# content-raw: file nặng, không đưa lên git
+*.cr3
+*.CR3
+*.mov
+*.MOV
+*.psd
+*.PSD
+
+# file > 50MB (gitignore không lọc theo dung lượng được, nên liệt kê tay; cập nhật khi thêm file lớn)
+content-raw/previous-works/animation/ma26-ooh-pho-di-bo.mp4
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
