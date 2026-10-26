@@ -1,12 +1,14 @@
 import { projects } from "@/content/projects";
 import Hero from "@/components/Hero";
 import RevealText from "@/components/RevealText";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <section id="work" className="scroll-mt-8 px-gutter py-section">
+      <section id="work" className="scroll-mt-16 px-gutter py-section">
         <RevealText as="h2" className="font-display text-display-md uppercase leading-none">
           Selected work
         </RevealText>
@@ -21,6 +23,8 @@ export default function Home() {
           ))}
         </ul>
       </section>
+      <About />
+      <Contact />
     </main>
   );
 }

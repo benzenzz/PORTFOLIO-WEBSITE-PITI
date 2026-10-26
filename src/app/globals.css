@@ -73,6 +73,28 @@ body {
   }
 }
 
+.site-header {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.site-header[data-hidden]:not(:focus-within) {
+  transform: translateY(-100%);
+}
+
+/* Full-screen mobile menu (native modal <dialog>). */
+.menu-overlay {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  opacity: 1;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+@starting-style {
+  .menu-overlay[open] {
+    opacity: 0;
+  }
+}
+
 /* Gallery tile → project cover morph (React <ViewTransition share="morph">). */
 ::view-transition-group(.morph) {
   animation-duration: var(--duration-slow);

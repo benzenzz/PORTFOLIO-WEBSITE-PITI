@@ -1,12 +1,13 @@
 import Gallery from "@/components/Gallery";
 import RevealText from "@/components/RevealText";
+import { site } from "@/content/site";
 
-// Disciplines come from the content-raw/ folders; name and intro are not supplied yet.
+// Disciplines come from the content-raw/ folders.
 export default function Hero() {
   return (
-    <section className="flex min-h-svh flex-col gap-8 overflow-x-clip p-gutter">
+    <section className="flex min-h-svh flex-col gap-8 overflow-x-clip p-gutter pt-16">
       <RevealText as="p" split="words" trigger="load" className="text-xs uppercase tracking-widest text-gray">
-        [Your name] — [Role, city]
+        {site.name} — {site.role}
       </RevealText>
       <RevealText
         as="h1"
