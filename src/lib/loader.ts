@@ -1,7 +1,7 @@
-// html[data-intro]: absent until the gate script runs, then "on" (play loader + deck intro) or "off".
+// html[data-intro]: absent until the gate script runs, then "on" (play loader) or "off".
 // CSS shows the loader while it is not "off", so a first visit never flashes the finished page.
 export const LOADER_DONE = "loader:done";
-// Seconds. The card deck intro (CardDeck.tsx) is timed against these.
+// Seconds.
 export const LOADER_TIMING = { count: 1.2, reveal: 0.6 };
 
 export const introOn = () => document.documentElement.dataset.intro === "on";

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
 
-// Temporary project page so deck links resolve; the full case study comes in a later phase.
+// Temporary project page so gallery links resolve; the full case study comes in a later phase.
 // Every slug is prerendered via generateStaticParams; this only silences the dev "params outside <Suspense>" check.
 export const instant = false;
 

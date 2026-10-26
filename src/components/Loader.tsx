@@ -22,7 +22,7 @@ export default function Loader() {
       };
 
       const n = { v: 0 };
-      // Total 1.8s; the card deck finishes its own intro by 2.5s.
+      // Total 1.8s; the hero gallery starts cycling when it ends.
       gsap
         .timeline({ onComplete: finish })
         .to(n, {
