@@ -1,11 +1,14 @@
-// The loader runs only when the inline script in layout.tsx set html[data-loader].
+// html[data-intro]: absent until the gate script runs, then "on" (play loader + deck intro) or "off".
+// CSS shows the loader while it is not "off", so a first visit never flashes the finished page.
 export const LOADER_DONE = "loader:done";
 // Seconds. The card deck intro (CardDeck.tsx) is timed against these.
 export const LOADER_TIMING = { count: 1.2, reveal: 0.6 };
 
+export const introOn = () => document.documentElement.dataset.intro === "on";
+
 /** Calls `cb` once the loader has finished (immediately if it never ran). Returns a cleanup. */
 export function whenLoaderDone(cb: () => void) {
-  if (!document.documentElement.hasAttribute("data-loader")) {
+  if (!introOn()) {
     cb();
     return () => {};
   }
@@ -13,5 +16,5 @@ export function whenLoaderDone(cb: () => void) {
   return () => window.removeEventListener(LOADER_DONE, cb);
 }
 
-// Runs before paint: decides whether to show the loader, so JS-off or repeat visits never see it.
-export const loaderGateScript = `try{if(!sessionStorage.getItem("loaderSeen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.setAttribute("data-loader","")}}catch(e){}`;
+// Runs before hydration: first visit in this session with motion allowed → "on", otherwise "off".
+export const loaderGateScript = `try{document.documentElement.dataset.intro=!sessionStorage.getItem("loaderSeen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches?"on":"off"}catch(e){document.documentElement.dataset.intro="off"}`;

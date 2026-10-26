@@ -68,15 +68,37 @@ body {
   }
 }
 
-/* Loader: hidden unless the gate script in layout.tsx opted in, so it never shows without JS. */
+/* Loader + deck intro gate (see src/lib/loader.ts). Shown from first paint until the gate says "off",
+   so first visits never flash the finished hero. If JS never runs, a CSS failsafe clears it after 4s. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  html:not([data-intro="off"]) .loader {
+    display: flex;
+  }
+  html:not([data-intro="off"]) .deck {
+    visibility: hidden; /* CardDeck reveals it once the cards are in their start pose */
+  }
+  html:not([data-intro]) .loader {
+    animation: intro-failsafe-hide 0s 4s forwards;
+  }
+  html:not([data-intro]) .deck {
+    animation: intro-failsafe-show 0s 4s forwards;
+  }
+}
+@keyframes intro-failsafe-hide {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes intro-failsafe-show {
+  to {
+    visibility: visible;
+  }
+}
 .loader {
   display: none;
-}
-html[data-loader] .loader {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   padding: var(--space-gutter);
@@ -89,18 +111,19 @@ html[data-loader] .loader {
 /* Card deck: resting 3D ring drawn in CSS so it exists without JS. Keep RADIUS/OFFSET in CardDeck.tsx in sync. */
 .deck {
   --n: min(var(--n-all), 9);
-  --w: clamp(72px, 11vw, 160px);
-  --r: calc(var(--w) * var(--n) * 0.19);
+  --w: clamp(96px, 10vw, 170px);
+  --r: calc(var(--w) * var(--n) * 0.26);
   position: relative;
   z-index: 101; /* above the loader overlay so cards fly over it */
   display: grid;
   place-items: center;
   min-height: 52svh;
-  perspective: calc(var(--r) * 1.6);
+  perspective: calc(var(--r) * 2.4);
 }
 .deck-ring {
   transform-style: preserve-3d;
-  transform: rotateX(-6deg) translateZ(calc(var(--r) * -0.35));
+  /* Lifted so the near cards clear the hero text; tilted so the ring is seen slightly from above. */
+  transform: translateY(calc(var(--r) * -0.3)) rotateX(-20deg) translateZ(calc(var(--r) * -0.35));
 }
 .deck-spin {
   position: relative;
@@ -153,6 +176,11 @@ html[data-loader] .loader {
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 @media (max-width: 767px) {

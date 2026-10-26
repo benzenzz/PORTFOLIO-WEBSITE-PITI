@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP, EASE } from "@/lib/gsap";
-import { LOADER_DONE, LOADER_TIMING } from "@/lib/loader";
+import { LOADER_DONE, LOADER_TIMING, introOn } from "@/lib/loader";
 
 export default function Loader() {
   const root = useRef<HTMLDivElement>(null);
@@ -11,10 +11,10 @@ export default function Loader() {
   useGSAP(
     () => {
       const html = document.documentElement;
-      if (!html.hasAttribute("data-loader")) return;
+      if (!introOn()) return;
 
       const finish = () => {
-        html.removeAttribute("data-loader");
+        html.dataset.intro = "off";
         try {
           sessionStorage.setItem("loaderSeen", "1");
         } catch {}

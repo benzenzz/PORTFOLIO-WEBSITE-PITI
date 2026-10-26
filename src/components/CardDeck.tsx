@@ -5,11 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/content/projects";
 import { gsap, ScrollTrigger, useGSAP, DURATION, EASE, MOTION_QUERIES } from "@/lib/gsap";
-import { LOADER_TIMING } from "@/lib/loader";
+import { LOADER_TIMING, introOn } from "@/lib/loader";
 
-// Keep in sync with .deck in globals.css: radius = card width × count × RADIUS, ring pushed back by OFFSET × radius.
-const RADIUS = 0.19;
+// Keep in sync with .deck-ring in globals.css: radius = card width × count × RADIUS,
+// ring pushed back by OFFSET × radius and lifted by LIFT × radius.
+const RADIUS = 0.26;
 const OFFSET = 0.35;
+const LIFT = 0.3;
 const BASE_SPEED = 8; // deg/s idle spin
 const DEG = Math.PI / 180;
 
@@ -78,21 +80,26 @@ export default function CardDeck() {
         };
         gsap.ticker.add(tick);
 
-        if (document.documentElement.hasAttribute("data-loader")) {
+        if (introOn()) {
           const R = cards[0].offsetWidth * n * RADIUS;
-          const A = Math.min(stage.offsetWidth * 0.38, 520); // fan arc radius
-          const fan = (i: number) => (n > 1 ? -80 + (160 * i) / (n - 1) : 0);
+          const vh = window.innerHeight;
+          const box = stage.getBoundingClientRect();
+          const lift = R * LIFT; // undo the ring's lift while stacked/fanned
+          const toCenter = vh / 2 - (box.top + box.height / 2) + lift; // the stack sits mid-screen, the fan in the stage
+          const A = Math.min(stage.offsetWidth * 0.3, 420); // fan arc radius
+          const fan = (i: number) => (n > 1 ? -70 + (140 * i) / (n - 1) : 0);
           const { count } = LOADER_TIMING;
 
           // a: deck flies up while the loader counts; b: fans into an arc at 100; c: becomes the ring. Ends ≈2.46s.
           gsap
             .timeline({ onComplete: () => void (spinning = true) })
-            .set(cards, { x: 0, y: window.innerHeight, z: R * OFFSET, rotationY: 0, rotation: 0, willChange: "transform" })
+            .set(cards, { x: 0, y: toCenter + vh, z: R * OFFSET, rotationY: 0, rotation: 0, willChange: "transform" })
+            .set(stage, { visibility: "visible" })
             .to(
               cards,
               {
                 x: () => gsap.utils.random(-14, 14),
-                y: () => gsap.utils.random(-10, 10),
+                y: () => toCenter + gsap.utils.random(-10, 10),
                 rotation: () => gsap.utils.random(-7, 7),
                 duration: 0.9,
                 ease: EASE.out,
@@ -104,7 +111,7 @@ export default function CardDeck() {
               cards,
               {
                 x: (i) => A * Math.sin(fan(i) * DEG),
-                y: (i) => A * (0.55 - Math.cos(fan(i) * DEG)),
+                y: (i) => lift + A * (0.7 - Math.cos(fan(i) * DEG)),
                 rotation: fan,
                 duration: 0.5,
                 ease: EASE.inOut,
