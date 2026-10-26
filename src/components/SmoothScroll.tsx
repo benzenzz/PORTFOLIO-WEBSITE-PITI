@@ -8,7 +8,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   useGSAP(() => {
     // Reduced motion: no branch matches, so the page keeps native scroll.
     gsap.matchMedia().add(MOTION_QUERIES.motion, () => {
-      const lenis = new Lenis({ autoRaf: false });
+      const lenis = new Lenis({ autoRaf: false, anchors: true }) // anchors: smooth-scrolls in-page links like the hero CTA;
       lenis.on("scroll", ScrollTrigger.update);
       const raf = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(raf);

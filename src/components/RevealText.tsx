@@ -36,8 +36,8 @@ export default function RevealText({
         return tween;
       };
 
-      const mm = gsap.matchMedia();
-      mm.add(MOTION_QUERIES.motion, () => {
+      // Reduced motion: no branch matches, so the text is simply shown.
+      gsap.matchMedia().add(MOTION_QUERIES.motion, () => {
         SplitText.create(el, {
           type: split,
           mask: split,
@@ -55,9 +55,6 @@ export default function RevealText({
               }),
             ),
         });
-      });
-      mm.add(MOTION_QUERIES.reduce, () => {
-        start(gsap.from(el, { autoAlpha: 0, duration: DURATION.base, delay, scrollTrigger, paused: trigger === "load" }));
       });
       return () => stopWaiting();
     },

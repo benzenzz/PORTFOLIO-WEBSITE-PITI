@@ -76,7 +76,9 @@ function layouts(n: number, w: number, h: number, s: number) {
 export default function Gallery() {
   const root = useRef<HTMLDivElement>(null);
   const pick = useRef<((name: Layout) => void) | null>(null);
+  const toggle = useRef<(() => void) | null>(null);
   const [active, setActive] = useState<Layout>("scatter");
+  const [playing, setPlaying] = useState(true);
 
   useGSAP(
     () => {
@@ -100,11 +102,12 @@ export default function Gallery() {
         const ys = new Float32Array(n);
         let morph: gsap.core.Timeline | null = null;
         let auto: gsap.core.Tween | null = null;
-        let userPicked = false;
+        let paused = false; // Pause button or a layout pick holds all motion (WCAG 2.2.2)
         let visible = true;
+        let t = 0; // motion clock; stops while paused so drift resumes without a jump
+        setPlaying(true);
 
         const draw = () => {
-          const t = gsap.ticker.time;
           const drift = L.step * 0.15 * mix.scatter;
           const waveAt = ((t * 0.3) % 1.6) - 0.3; // sweeps past both ends of the row
           els.forEach((el, i) => {
@@ -181,7 +184,7 @@ export default function Gallery() {
 
         const schedule = () => {
           auto?.kill();
-          if (reduce || userPicked) return;
+          if (reduce || paused) return;
           auto = gsap.delayedCall(HOLD + MORPH, () => {
             goTo(order[(order.indexOf(current) + 1) % order.length]);
             schedule();
@@ -203,16 +206,29 @@ export default function Gallery() {
         measure();
         stage.dataset.ready = "";
 
+        const setPaused = (value: boolean) => {
+          paused = value;
+          setPlaying(!value);
+          if (value) {
+            auto?.kill();
+          } else {
+            morph?.resume();
+            schedule();
+          }
+        };
         pick.current = (name) => {
-          userPicked = true; // a manual choice stops the auto cycle
-          auto?.kill();
+          setPaused(true); // a manual choice holds that layout until Play
           goTo(name);
+        };
+        toggle.current = () => {
+          if (!paused) morph?.pause();
+          setPaused(!paused);
         };
 
         // Hold still while a tile has keyboard focus.
         const onFocusIn = () => auto?.pause();
         const onFocusOut = (e: FocusEvent) => {
-          if (!stage.contains(e.relatedTarget as Node)) auto?.resume();
+          if (!paused && !stage.contains(e.relatedTarget as Node)) auto?.resume();
         };
         stage.addEventListener("focusin", onFocusIn);
         stage.addEventListener("focusout", onFocusOut);
@@ -221,14 +237,16 @@ export default function Gallery() {
         ro.observe(stage);
         const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
         io.observe(stage);
-        const tick = () => {
-          if (visible) draw();
+        const tick = (_: number, dt: number) => {
+          if (!paused) t += dt / 1000;
+          if (visible && (!paused || morph?.isActive())) draw();
         };
         if (!reduce) gsap.ticker.add(tick);
         const stopWaiting = whenLoaderDone(schedule);
 
         return () => {
           pick.current = null;
+          toggle.current = null;
           stopWaiting();
           auto?.kill();
           morph?.kill();
@@ -266,6 +284,14 @@ export default function Gallery() {
             {name}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => toggle.current?.()}
+          className="border border-ink px-3 py-1.5 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red motion-reduce:hidden"
+        >
+          {playing ? "Pause" : "Play"}
+          <span className="sr-only"> gallery motion</span>
+        </button>
       </div>
     </div>
   );
