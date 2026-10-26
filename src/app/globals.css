@@ -13,6 +13,7 @@
   --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --text-lg: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
   --text-display-md: clamp(2.5rem, 1.5rem + 5vw, 6rem);
+  --text-display-lg: clamp(2.75rem, 1rem + 8vw, 9rem);
   --text-display-xl: clamp(4rem, 1rem + 15vw, 14rem);
 
   /* Spacing */
@@ -39,6 +40,7 @@
   --text-base: var(--text-base);
   --text-lg: var(--text-lg);
   --text-display-md: var(--text-display-md);
+  --text-display-lg: var(--text-display-lg);
   --text-display-xl: var(--text-display-xl);
   --spacing-gutter: var(--space-gutter);
   --spacing-section: var(--space-section);
