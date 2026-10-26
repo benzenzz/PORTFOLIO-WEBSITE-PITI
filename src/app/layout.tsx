@@ -19,12 +19,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${anton.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
-      <head>
+      <body>
         <Script id="loader-gate" strategy="beforeInteractive">
           {loaderGateScript}
         </Script>
-      </head>
-      <body>
         <Loader />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
