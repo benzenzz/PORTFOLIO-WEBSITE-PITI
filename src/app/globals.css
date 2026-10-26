@@ -66,6 +66,17 @@ body {
     --duration-base: 0.01ms;
     --duration-slow: 0.01ms;
   }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* Gallery tile → project cover morph (React <ViewTransition share="morph">). */
+::view-transition-group(.morph) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-in-out);
 }
 
 /* Loader gate (see src/lib/loader.ts). Shown from first paint until the gate says "off",

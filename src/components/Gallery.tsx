@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/content/projects";
@@ -79,6 +79,7 @@ export default function Gallery() {
   const toggle = useRef<(() => void) | null>(null);
   const [active, setActive] = useState<Layout>("scatter");
   const [playing, setPlaying] = useState(true);
+  const [flying, setFlying] = useState<number | null>(null);
 
   useGSAP(
     () => {
@@ -265,8 +266,11 @@ export default function Gallery() {
     <div className="flex flex-col gap-4">
       <div ref={root} className="gallery">
         {tiles.map((p, i) => (
-          <Link key={i} href={`/work/${p.slug}`} className="gallery-tile">
-            <Image src={p.cover!} alt={p.title} fill sizes="96px" loading="eager" className="object-cover" />
+          <Link key={i} href={`/work/${p.slug}`} onClick={() => setFlying(i)} className="gallery-tile">
+            {/* Covers repeat across tiles and names must be unique, so only the clicked tile gets one. */}
+            <ViewTransition name={flying === i ? `cover-${p.slug}` : undefined} share="morph" default="none">
+              <Image src={p.cover!} alt={p.title} fill sizes="96px" loading="eager" className="object-cover" />
+            </ViewTransition>
             {ACCENTS.has(i) && <span className="gallery-accent" aria-hidden="true" />}
           </Link>
         ))}

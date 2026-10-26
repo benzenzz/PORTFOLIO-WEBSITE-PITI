@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { gsap, SplitText, useGSAP, DURATION, EASE, MOTION_QUERIES } from "@/lib/gsap";
 import { whenLoaderDone } from "@/lib/loader";
 
+const MASK_BLEED = 0.15; // em
+
 type Props = {
   children: React.ReactNode;
   as?: React.ElementType;
@@ -42,10 +44,13 @@ export default function RevealText({
           type: split,
           mask: split,
           autoSplit: true, // re-splits on resize and font load; returned tween keeps its progress
-          onSplit: (self) =>
-            start(
+          onSplit: (self) => {
+            // Tight leading would clip Vietnamese diacritics and descenders; grow the mask without moving layout.
+            gsap.set(self.masks, { padding: `${MASK_BLEED}em 0`, margin: `-${MASK_BLEED}em 0` });
+            return start(
               gsap.from(self[split], {
-                yPercent: 110,
+                yPercent: 140, // clears the extra mask bleed
+
                 stagger: split === "lines" ? 0.08 : 0.04,
                 duration: DURATION.slow * 1.4,
                 ease: EASE.out,
@@ -53,7 +58,8 @@ export default function RevealText({
                 scrollTrigger,
                 paused: trigger === "load",
               }),
-            ),
+            );
+          },
         });
       });
       return () => stopWaiting();
