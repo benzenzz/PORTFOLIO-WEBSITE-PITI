@@ -24,16 +24,17 @@ const p = (
   title: string,
   category: string,
   source: string,
-): Project => ({ ...TODO, slug, title, category, source, cover: null, media: [] });
+  cover: string | null = null,
+): Project => ({ ...TODO, slug, title, category, source, cover, media: [] });
 
 export const projects: Project[] = [
-  p("ma26-design", "MA26 — Key visuals & posts", "Visual design", "design/key-post, design/posm, design/muoi-creative"),
-  p("post-nhat", "Post nhật series", "Visual design", "design/post-nhat, design/daily-post"),
-  p("project-tet", "Project Tết", "Photography", "photography/project-tet"),
-  p("ma25-photo", "MA25 event photography", "Photography", "photography/ma25"),
-  p("loy-choi", "Chụp lơ chơi", "Photography", "photography/chup-loy-choi"),
+  p("ma26-design", "MA26 — Key visuals & posts", "Visual design", "design/key-post, design/posm, design/muoi-creative", "/projects/ma26-design/cover.jpg"),
+  p("post-nhat", "Post nhật series", "Visual design", "design/post-nhat, design/daily-post", "/projects/post-nhat/cover.jpg"),
+  p("project-tet", "Project Tết", "Photography", "photography/project-tet", "/projects/project-tet/cover.jpg"),
+  p("ma25-photo", "MA25 event photography", "Photography", "photography/ma25", "/projects/ma25-photo/cover.jpg"),
+  p("loy-choi", "Chụp lơ chơi", "Photography", "photography/chup-loy-choi", "/projects/loy-choi/cover.jpg"),
   p("animation", "Motion & invitations", "Animation", "animation"),
   p("vfx", "VFX teasers", "VFX", "vfx"),
   p("videography", "Event videography", "Videography", "videography-strength"),
-  p("handy-craft", "Handy craft", "Handmade", "handy-craft"),
+  p("handy-craft", "Handy craft", "Handmade", "handy-craft", "/projects/handy-craft/cover.jpg"),
 ];

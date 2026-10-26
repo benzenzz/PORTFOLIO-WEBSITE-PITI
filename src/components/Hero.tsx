@@ -1,9 +1,13 @@
+import CardDeck from "@/components/CardDeck";
 import RevealText from "@/components/RevealText";
 
 // Disciplines come from the content-raw/ folders; name and intro are not supplied yet.
 export default function Hero() {
   return (
-    <section className="flex min-h-svh flex-col justify-end gap-8 px-gutter pb-gutter pt-section">
+    <section className="flex min-h-svh flex-col gap-8 overflow-x-clip p-gutter">
+      <div className="flex flex-1 flex-col justify-center">
+        <CardDeck />
+      </div>
       <RevealText as="p" split="words" trigger="load" className="text-xs uppercase tracking-widest text-gray">
         [Your name] — [Role, city]
       </RevealText>

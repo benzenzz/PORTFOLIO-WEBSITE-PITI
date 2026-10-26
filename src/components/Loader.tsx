@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP, EASE } from "@/lib/gsap";
-import { LOADER_DONE } from "@/lib/loader";
+import { LOADER_DONE, LOADER_TIMING } from "@/lib/loader";
 
 export default function Loader() {
   const root = useRef<HTMLDivElement>(null);
@@ -22,18 +22,18 @@ export default function Loader() {
       };
 
       const n = { v: 0 };
-      // Total 1.7s, under the 1.8s budget in PLAN.md.
+      // Total 1.8s; the card deck finishes its own intro by 2.5s.
       gsap
         .timeline({ onComplete: finish })
         .to(n, {
           v: 100,
-          duration: 1.1,
+          duration: LOADER_TIMING.count,
           ease: "power2.inOut",
           onUpdate: () => {
             count.current!.textContent = String(Math.round(n.v));
           },
         })
-        .to(root.current, { clipPath: "inset(0 0 100% 0)", duration: 0.6, ease: EASE.inOut });
+        .to(root.current, { clipPath: "inset(0 0 100% 0)", duration: LOADER_TIMING.reveal, ease: EASE.inOut });
     },
     { scope: root },
   );

@@ -1,5 +1,7 @@
 // The loader runs only when the inline script in layout.tsx set html[data-loader].
 export const LOADER_DONE = "loader:done";
+// Seconds. The card deck intro (CardDeck.tsx) is timed against these.
+export const LOADER_TIMING = { count: 1.2, reveal: 0.6 };
 
 /** Calls `cb` once the loader has finished (immediately if it never ran). Returns a cleanup. */
 export function whenLoaderDone(cb: () => void) {

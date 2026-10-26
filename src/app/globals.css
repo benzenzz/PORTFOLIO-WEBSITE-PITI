@@ -85,3 +85,109 @@ html[data-loader] .loader {
   clip-path: inset(0 0 0 0);
   pointer-events: none; /* never blocks clicks or scrolling underneath */
 }
+
+/* Card deck: resting 3D ring drawn in CSS so it exists without JS. Keep RADIUS/OFFSET in CardDeck.tsx in sync. */
+.deck {
+  --n: min(var(--n-all), 9);
+  --w: clamp(72px, 11vw, 160px);
+  --r: calc(var(--w) * var(--n) * 0.19);
+  position: relative;
+  z-index: 101; /* above the loader overlay so cards fly over it */
+  display: grid;
+  place-items: center;
+  min-height: 52svh;
+  perspective: calc(var(--r) * 1.6);
+}
+.deck-ring {
+  transform-style: preserve-3d;
+  transform: rotateX(-6deg) translateZ(calc(var(--r) * -0.35));
+}
+.deck-spin {
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 3 / 4;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.deck-card {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateY(calc((var(--i) - (var(--n) - 1) / 2) * 360deg / var(--n))) translateZ(var(--r));
+}
+.deck-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+}
+.deck-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  background: var(--color-ink);
+}
+.deck-back {
+  transform: rotateY(180deg);
+  border: 1px solid rgba(245, 244, 240, 0.2);
+}
+.deck-back::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--color-red);
+}
+.deck-label {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 0.4em 0.5em;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.625rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 767px) {
+  .deck {
+    --n: min(var(--n-all), 6);
+  }
+  .deck-card:nth-child(n + 7) {
+    display: none;
+  }
+}
+
+/* JS disabled: plain grid of the same links. */
+@media (scripting: none) {
+  .deck {
+    display: block;
+    min-height: 0;
+    perspective: none;
+  }
+  .deck-ring {
+    transform: none;
+  }
+  .deck-spin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    width: auto;
+    aspect-ratio: auto;
+  }
+  .deck-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4;
+    transform: none;
+  }
+  .deck-back {
+    display: none;
+  }
+}
