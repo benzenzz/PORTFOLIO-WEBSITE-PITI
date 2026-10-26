@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Loader from "@/components/Loader";
 import { loaderGateScript } from "@/lib/loader";
+import Script from "next/script";
 
 // Anton: heavy, tall, condensed grotesque — matches the poster-like headlines of the moodboard;
 // has Vietnamese glyphs. Inter: neutral, highly legible UI/body face that stays out of the work's way.
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${anton.variable} ${inter.variable} antialiased`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: loaderGateScript }} />
+        <Script id="loader-gate" strategy="beforeInteractive">
+          {loaderGateScript}
+        </Script>
       </head>
       <body>
         <Loader />
