@@ -1,56 +1,90 @@
 import RevealText from "@/components/RevealText";
 import { site } from "@/content/site";
 
-const label = "text-xs uppercase tracking-widest text-gray";
+const label = "font-mono text-xs uppercase tracking-widest text-gray";
+const pad = (n: number) => String(n).padStart(2, "0");
 
-const List = ({ title, items }: { title: string; items: string[] }) => (
-  <div>
-    <h3 className={label}>{title}</h3>
-    <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-      {items.map((item) => (
-        <li key={item}>{item}</li>
-      ))}
-    </ul>
+const Row = ({ n, title, children }: { n: number; title: string; children: React.ReactNode }) => (
+  <div className="grid gap-3 border-b border-line py-5 sm:grid-cols-[11rem_1fr]">
+    <dt className={label}>
+      {pad(n)} {title}
+    </dt>
+    <dd>{children}</dd>
   </div>
 );
 
+// Content comes from site.ts as supplied; nothing here is re-verified until the résumé is confirmed.
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-16 border-t border-line px-gutter py-section">
-      <RevealText as="h2" className="font-display text-display-md uppercase leading-none">
-        About
-      </RevealText>
-      <RevealText as="p" split="words" className="mt-8 max-w-[32ch] text-balance text-lg leading-snug">
-        {site.intro}
-      </RevealText>
+    <section id="about" data-surface="paper" className="grain scroll-mt-11 px-gutter py-section [--grain:0.05]">
+      <div aria-hidden className={`${label} flex justify-between gap-6 border-b border-line pb-3`}>
+        <span>(03) About</span>
+        <span>{site.name}</span>
+      </div>
 
-      <div className="mt-section grid gap-12 md:grid-cols-[2fr_1fr]">
-        <div>
-          <h3 className={label}>Highlights</h3>
-          <ul className="mt-3 border-t border-line">
-            {site.highlights.map((h) => (
-              <li key={h} className="max-w-prose border-b border-line py-3">
-                {h}
-              </li>
-            ))}
-          </ul>
+      <div className="mt-12 grid gap-12 md:grid-cols-12 md:gap-x-[var(--space-gutter)]">
+        <div className="md:col-span-5">
+          <RevealText as="h2" className="text-display-lg font-extrabold uppercase leading-[0.85] tracking-[-0.04em]">
+            About
+          </RevealText>
+          <RevealText as="p" split="words" className="mt-8 max-w-[32ch] text-balance text-lg leading-snug">
+            {site.intro}
+          </RevealText>
         </div>
-        <div className="flex flex-col gap-8">
-          <List title="Capabilities" items={site.capabilities} />
-          <List title="Tools" items={site.tools} />
-          <div>
-            <h3 className={label}>Websites</h3>
-            <ul className="mt-1 flex flex-col">
+
+        <dl className="border-t border-ink md:col-span-7">
+          <Row n={1} title="Work categories">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1">
+              {site.capabilities.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={2} title="Tools">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1">
+              {site.tools.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={3} title="Highlights">
+            <ul className="flex flex-col gap-6">
+              {site.highlights.map((h) => (
+                <li key={h.title} className="max-w-prose">
+                  <p className="flex flex-wrap items-baseline gap-x-3 font-bold tracking-tight">
+                    {h.title}
+                    {h.period && <span className={label}>{h.period}</span>}
+                  </p>
+                  <p className="mt-1">{h.body}</p>
+                  {h.note && <p className="mt-1 text-sm text-gray">{h.note}</p>}
+                </li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={4} title="Background">
+            <ul className="flex flex-col gap-1">
+              {site.background.map((b) => (
+                <li key={b}>{b}</li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={5} title="Websites">
+            <ul className="flex flex-col">
               {site.sites.map(([name, url]) => (
                 <li key={url}>
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="inline-block py-3 underline decoration-ink underline-offset-4 hover:text-red hover:decoration-red">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 items-center underline decoration-ink underline-offset-4 transition-colors duration-[var(--duration-fast)] hover:text-red-text hover:decoration-red-text hover:decoration-2"
+                  >
                     {name} ↗<span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
+          </Row>
+        </dl>
       </div>
     </section>
   );

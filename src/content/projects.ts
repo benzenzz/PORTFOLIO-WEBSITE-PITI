@@ -12,6 +12,8 @@ export type Project = {
   role: string;
   /** Public path once the asset is copied from content-raw/ into public/projects/<slug>/. */
   cover: string | null;
+  /** Frame taken from the project's own footage; used where a video-only project has no cover. */
+  poster: string | null;
   description: string;
   context: string;
   process: string;
@@ -35,16 +37,30 @@ const p = (
   category: string,
   source: string,
   cover: string | null = null,
-): Project => ({ ...TODO, slug, title, category, source, cover, media: media[slug] });
+  poster: string | null = null,
+): Project => ({ ...TODO, slug, title, category, source, cover, poster, media: media[slug] });
 
 export const projects: Project[] = [
   p("ma26-design", "MA26 — Key visuals & posts", "Visual design", "design/key-post, design/posm, design/muoi-creative", "/projects/ma26-design/cover.jpg"),
   p("post-nhat", "Post nhật series", "Visual design", "design/post-nhat, design/daily-post", "/projects/post-nhat/cover.jpg"),
-  p("project-tet", "Project Tết", "Photography", "photography/project-tet", "/projects/project-tet/cover.jpg"),
+  p("project-tet", "HƯNG TỴ THÁI BÌNH", "Photography", "photography/project-tet", "/projects/project-tet/cover.jpg"),
   p("ma25-photo", "MA25 event photography", "Photography", "photography/ma25", "/projects/ma25-photo/cover.jpg"),
   p("loy-choi", "Chụp lơ chơi", "Photography", "photography/chup-loy-choi", "/projects/loy-choi/cover.jpg"),
-  p("animation", "Motion & invitations", "Animation", "animation"),
-  p("vfx", "VFX teasers", "VFX", "vfx"),
-  p("videography", "Event videography", "Videography", "videography-strength"),
+  p("animation", "Motion & invitations", "Animation", "animation", null, "/projects/animation/poster.jpg"),
+  p("vfx", "VFX teasers", "VFX", "vfx", null, "/projects/vfx/poster.jpg"),
+  p("videography", "Event videography", "Videography", "videography-strength", null, "/projects/videography/poster.jpg"),
   p("handy-craft", "Handy craft", "Handmade", "handy-craft", "/projects/handy-craft/cover.jpg"),
 ];
+
+/** Pixel size of each project's cover/poster, so cards can reserve their natural ratio without cropping. */
+export const imageSize: Record<string, [number, number]> = {
+  "ma26-design": [1638, 2048],
+  "post-nhat": [2000, 2000],
+  "project-tet": [6000, 4000],
+  "ma25-photo": [2000, 2000],
+  "loy-choi": [1706, 2560],
+  animation: [1080, 1080],
+  vfx: [1920, 1080],
+  videography: [1920, 1080],
+  "handy-craft": [2048, 2048],
+};
