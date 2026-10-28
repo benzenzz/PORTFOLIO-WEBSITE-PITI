@@ -1,4 +1,13 @@
 // Owner-supplied facts (from the CV). Do not add or round numbers here.
+export type Metric = {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+};
+export type Highlight = { title: string; period?: string; metrics: Metric[]; body: string; note?: string };
+
 export const site = {
   name: "Demi Phan",
   wordmark: "PITI", // proposed; no © unless the owner approves it
@@ -10,33 +19,54 @@ export const site = {
   intro:
     "A creative-driven, detail-oriented student with hands-on experience in video editing, motion graphics, and visual storytelling.",
   // Curated and owner-approved; every figure checked against reference/[RESUME] PITI STH.docx (2026-10-27).
+  // metrics[0] is the lead figure of each highlight. Each metric's value is the final, verified number.
   highlights: [
     {
       title: "Creative Communications — Marketing Arena 2026",
       period: "October 2025 – July 2026",
-      body: "Led creative concepts and campaign communications across social media, website and event touchpoints. Campaign content on Creatio’s 48K+ follower fanpage generated 2.4M views, 37K+ interactions and 14.2K link clicks.",
-      note: "Nationwide marketing competition: 3,087 participants, 1,029 teams, 80 universities.",
+      metrics: [
+        { value: 2.4, decimals: 1, suffix: "M", label: "Views" },
+        { value: 37, suffix: "K+", label: "Interactions" },
+        { value: 14.2, decimals: 1, suffix: "K", label: "Link clicks" },
+      ],
+      body: "Led creative concepts and campaign communications across social media, website and event touchpoints.",
+      note: "Campaign content ran on Creatio’s 48K+ follower fanpage. Nationwide marketing competition: 3,087 participants, 1,029 teams, 80 universities.",
     },
     {
       title: "Digital Experience",
-      body: "Managed the Marketing Arena event website on WordPress, using AI-assisted HTML/CSS customization. The website generated 7K+ sessions in three months.",
+      metrics: [
+        { value: 7, suffix: "K+", label: "Sessions" },
+        { value: 3, label: "Months" },
+      ],
+      body: "Managed the Marketing Arena event website on WordPress, using AI-assisted HTML/CSS customization.",
     },
     {
       title: "HƯNG TỴ THÁI BÌNH — Tết 2025",
-      body: "Contributed to creative ideation, retouching and image manipulation. The project attracted 10K+ reach and 300+ engagements.",
+      metrics: [
+        { value: 10, suffix: "K+", label: "Reach" },
+        { value: 300, suffix: "+", label: "Engagements" },
+      ],
+      body: "Contributed to creative ideation and execution, including retouching and image manipulation.",
     },
     {
       title: "TVCreate 2026",
-      body: "Semi-finalist, placing in the Top 20 among 190+ nationwide participants. Developed a six-month, VND 5B IMC campaign and produced a TVC for Panasonic Electric Works Vietnam.",
+      metrics: [
+        { value: 20, prefix: "Top ", label: "Semi-finalist" },
+        { value: 190, suffix: "+", label: "Participants nationwide" },
+        { value: 5, prefix: "VND ", suffix: "B", label: "IMC campaign" },
+        { value: 6, label: "Months" },
+      ],
+      body: "Semi-finalist, placing in the Top 20 among 190+ participants nationwide. Developed a six-month, VND 5B IMC campaign and produced a TVC for Panasonic Electric Works Vietnam.",
     },
-  ] as { title: string; period?: string; body: string; note?: string }[],
+  ] as Highlight[],
   background: [
     "Creative member, Creatio — November 2024 – August 2026",
     "Foreign Trade University — International Business Economics (expected 2028)",
     "English — IELTS 7.0",
   ],
   // Portfolio categories from the content-raw/ folders — not verified skill claims.
-  capabilities: ["Design", "Photography", "Animation", "VFX", "Videography", "Handy craft"],
+  // Photography is omitted: photography-only projects are not part of the homepage selection.
+  capabilities: ["Design", "Animation", "VFX", "Videography", "Handy craft"],
   tools: ["Photoshop", "Premiere Pro", "After Effects", "WordPress", "HTML/CSS", "Codex / Generative AI Tools"],
   sites: [
     ["creatioftu2.com", "https://creatioftu2.com"],

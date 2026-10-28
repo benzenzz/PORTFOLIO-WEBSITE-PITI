@@ -52,6 +52,12 @@ export const projects: Project[] = [
   p("handy-craft", "Handy craft", "Handmade", "handy-craft", "/projects/handy-craft/cover.jpg"),
 ];
 
+/**
+ * Homepage "Selected work" list. Photography-category projects (ma25-photo, loy-choi, project-tet) are left out of it
+ * only; their routes, data and media stay. Ambiguity kept open: project-tet vs handy-craft are one Tết calendar project.
+ */
+export const featured = projects.filter((p) => p.category !== "Photography");
+
 /** Pixel size of each project's cover/poster, so cards can reserve their natural ratio without cropping. */
 export const imageSize: Record<string, [number, number]> = {
   "ma26-design": [1638, 2048],

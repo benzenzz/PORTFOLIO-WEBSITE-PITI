@@ -1,6 +1,6 @@
 import RevealText from "@/components/RevealText";
 import { site } from "@/content/site";
-import { projects } from "@/content/projects";
+import { featured } from "@/content/projects";
 
 const label = "font-mono text-xs uppercase tracking-widest text-gray";
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -58,7 +58,7 @@ export default function Hero() {
 
       <div aria-hidden className={`${label} mt-10 flex justify-between gap-6`}>
         <span>Scroll</span>
-        <span>{pad(projects.length)} selected projects</span>
+        <span>{pad(featured.length)} selected projects</span>
       </div>
     </section>
   );

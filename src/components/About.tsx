@@ -1,3 +1,4 @@
+import CountUp from "@/components/CountUp";
 import RevealText from "@/components/RevealText";
 import { site } from "@/content/site";
 
@@ -48,15 +49,30 @@ export default function About() {
             </ul>
           </Row>
           <Row n={3} title="Highlights">
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-10">
               {site.highlights.map((h) => (
-                <li key={h.title} className="max-w-prose">
+                <li key={h.title}>
                   <p className="flex flex-wrap items-baseline gap-x-3 font-bold tracking-tight">
                     {h.title}
                     {h.period && <span className={label}>{h.period}</span>}
                   </p>
-                  <p className="mt-1">{h.body}</p>
-                  {h.note && <p className="mt-1 text-sm text-gray">{h.note}</p>}
+                  {/* Lead figure large (and red), the rest smaller: scale and reach read first, copy second. */}
+                  <dl className="mt-3 flex flex-wrap items-end gap-x-8 gap-y-4">
+                    {h.metrics.map((m, i) => (
+                      <div key={m.label} className="flex flex-col-reverse">
+                        <dt className={`${label} mt-1`}>{m.label}</dt>
+                        <dd
+                          className={`font-extrabold leading-none tracking-[-0.04em] ${
+                            i === 0 ? "text-[length:clamp(2.5rem,1.5rem+3.5vw,4.5rem)] text-red-text" : "text-[length:clamp(1.5rem,1rem+1.5vw,2.25rem)]"
+                          }`}
+                        >
+                          <CountUp metric={m} delay={i * 0.12} />
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p className="mt-4 max-w-prose">{h.body}</p>
+                  {h.note && <p className="mt-1 max-w-prose text-sm text-gray">{h.note}</p>}
                 </li>
               ))}
             </ul>
