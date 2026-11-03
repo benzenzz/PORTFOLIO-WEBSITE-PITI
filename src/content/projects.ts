@@ -112,7 +112,7 @@ export const projects: Project[] = [
   }),
   // Playground: personal experiments, shown on /playground only.
   p({ slug: "loy-choi", title: "Chụp lơ chơi", group: "playground", tier: "C", tags: ["Photo"], cover: "/projects/loy-choi/cover.jpg", summary: "[Trying: …]" }),
-  p({ slug: "project-tet", title: "Project Tết", group: "playground", tier: "C", tags: ["Design"], cover: "/projects/project-tet/cover.jpg", summary: "[Trying: …]" }),
+  p({ slug: "project-tet", title: "HƯNG TỴ THÁI BÌNH", group: "playground", tier: "C", tags: ["Design"], cover: "/projects/project-tet/cover.jpg", summary: "Tết 2025 club project — creative ideation, retouching and image manipulation." }),
   // Kept as data, not published (owner's call).
   p({ slug: "post-nhat", title: "Post nhật series", group: "hidden", tier: "C", tags: ["Design"], cover: "/projects/post-nhat/cover.jpg" }),
   p({ slug: "ma25-photo", title: "MA25 event photography", group: "hidden", tier: "C", tags: ["Photo"], cover: "/projects/ma25-photo/cover.jpg" }),
@@ -123,6 +123,8 @@ export const GROUPS = { event: "Event Campaigns", social: "Social & Digital" } a
 
 /** Projects on the homepage and with a case-study page. */
 export const workProjects = projects.filter((p) => p.group === "event" || p.group === "social");
+/** Homepage count in the hero ("05 selected projects"). */
+export const featured = workProjects;
 export const playground = projects.filter((p) => p.group === "playground");
 
 /** Still image for a project: its cover, else the first YouTube thumbnail. */

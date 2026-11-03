@@ -15,6 +15,8 @@ type Props = {
   delay?: number;
   /** "scroll": reveal when it enters the viewport. "load": reveal once the loader is done (hero). */
   trigger?: "scroll" | "load";
+  /** "mask": lines/words rise out of a mask. "smear": the whole block resolves from a horizontal motion blur. */
+  effect?: "mask" | "smear";
 };
 
 export default function RevealText({
@@ -24,6 +26,7 @@ export default function RevealText({
   split = "lines",
   delay = 0,
   trigger = "scroll",
+  effect = "mask",
 }: Props) {
   const ref = useRef<HTMLElement>(null);
 
@@ -40,7 +43,18 @@ export default function RevealText({
 
       // Reduced motion: no branch matches, so the text is simply shown.
       gsap.matchMedia().add(MOTION_QUERIES.motion, () => {
+        if (effect === "smear") {
+          start(
+            gsap.fromTo(
+              el,
+              { x: -24, filter: "blur(8px)", autoAlpha: 0 },
+              { x: 0, filter: "blur(0px)", autoAlpha: 1, duration: DURATION.slow, ease: EASE.out, delay, scrollTrigger, paused: trigger === "load", clearProps: "transform,filter" },
+            ),
+          );
+          return;
+        }
         SplitText.create(el, {
+          aria: "none", // default "auto" puts aria-label on <p>, which is prohibited; lines/words stay readable as-is
           type: split,
           mask: split,
           autoSplit: true, // re-splits on resize and font load; returned tween keeps its progress

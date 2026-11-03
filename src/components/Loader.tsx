@@ -1,48 +1,31 @@
 "use client";
 
-import { useRef } from "react";
-import { gsap, useGSAP, EASE } from "@/lib/gsap";
-import { LOADER_DONE, LOADER_TIMING, introOn } from "@/lib/loader";
+import { useEffect, useRef } from "react";
+import { site } from "@/content/site";
+import { LOADER_DONE, introOn } from "@/lib/loader";
 
+// The red wipe itself is pure CSS (globals.css .loader) so it runs from first paint; this only ends the intro.
 export default function Loader() {
   const root = useRef<HTMLDivElement>(null);
-  const count = useRef<HTMLSpanElement>(null);
 
-  useGSAP(
-    () => {
-      const html = document.documentElement;
-      if (!introOn()) return;
-
-      const finish = () => {
-        html.dataset.intro = "off";
-        try {
-          sessionStorage.setItem("loaderSeen", "1");
-        } catch {}
-        window.dispatchEvent(new Event(LOADER_DONE));
-      };
-
-      const n = { v: 0 };
-      // Total 0.8s; the hero gallery starts cycling when it ends.
-      gsap
-        .timeline({ onComplete: finish })
-        .to(n, {
-          v: 100,
-          duration: LOADER_TIMING.count,
-          ease: "power2.inOut",
-          onUpdate: () => {
-            count.current!.textContent = String(Math.round(n.v));
-          },
-        })
-        .to(root.current, { clipPath: "inset(0 0 100% 0)", duration: LOADER_TIMING.reveal, ease: EASE.inOut });
-    },
-    { scope: root },
-  );
+  useEffect(() => {
+    if (!introOn()) return;
+    const finish = () => {
+      document.documentElement.dataset.intro = "off";
+      try {
+        sessionStorage.setItem("loaderSeen", "1");
+      } catch {}
+      window.dispatchEvent(new Event(LOADER_DONE));
+    };
+    // The wipe may already be over by hydration; a finished animation resolves immediately.
+    const wipe = root.current!.getAnimations()[0];
+    if (wipe) wipe.finished.then(finish, finish);
+    else finish();
+  }, []);
 
   return (
     <div ref={root} className="loader" aria-hidden="true">
-      <span ref={count} className="font-display text-display-xl leading-none tabular-nums">
-        0
-      </span>
+      <span className="text-[length:clamp(3rem,1rem+10vw,10rem)] font-extrabold leading-none tracking-[-0.045em]">{site.wordmark}</span>
     </div>
   );
 }

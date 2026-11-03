@@ -4,9 +4,12 @@
   /* Color */
   --color-ink: #101010;
   --color-paper: #f5f4f0;
-  --color-red: #ff343b;
-  --color-gray: #6b6b6b; /* #777 is 4.2:1 on paper; darkened to pass AA (≈5.1:1) for body-size metadata */
+  --color-red: #ff343b; /* 3.3:1 on paper: marks and large type only there; 5.3:1 on ink */
+  --color-red-text: #d7141b; /* small red text on paper, 4.8:1 */
+  --color-red-field: #c4161c; /* full red surfaces; paper text on it 5.5:1 */
+  --color-gray: #6b6b6b; /* #777 is 4.2:1 on paper; darkened to pass AA (4.8:1) for body-size metadata */
   --color-line: rgba(16, 16, 16, 0.16);
+  --color-gray-on-ink: #9a9a9a; /* 6.8:1 on ink */
 
   /* Type scale */
   --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
@@ -32,8 +35,11 @@
   --color-ink: var(--color-ink);
   --color-paper: var(--color-paper);
   --color-red: var(--color-red);
+  --color-red-text: var(--color-red-text);
+  --color-red-field: var(--color-red-field);
   --color-gray: var(--color-gray);
   --color-line: var(--color-line);
+  --color-gray-on-ink: var(--color-gray-on-ink);
   --font-display: var(--font-anton), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --text-xs: var(--text-xs);
@@ -59,6 +65,10 @@ body {
   outline: 2px solid var(--color-red);
   outline-offset: 3px;
 }
+/* Red ring would vanish on the red field. */
+[data-surface="red"] :focus-visible {
+  outline-color: var(--color-paper);
+}
 
 @media (prefers-reduced-motion: reduce) {
   :root {
@@ -73,8 +83,33 @@ body {
   }
 }
 
+/* Solid header that takes the surface of the section beneath it (Header.tsx sets data-surface). */
 .site-header {
-  transition: transform var(--duration-base) var(--ease-out);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-bottom: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+.site-header[data-surface="ink"] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.site-header[data-surface="red"] {
+  background: var(--color-red-field);
+  color: var(--color-paper);
+}
+.site-header [aria-current]::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-right: 0.5em;
+  background: var(--color-red);
+}
+.site-header[data-surface="red"] [aria-current]::before {
+  background: currentColor;
 }
 .site-header[data-hidden]:not(:focus-within) {
   transform: translateY(-100%);
@@ -101,14 +136,39 @@ body {
   animation-timing-function: var(--ease-in-out);
 }
 
+/* Static grain on interface surfaces. z-index -1 inside an isolated section: above the background,
+   below every child, so text and project media are never covered. Paper sections set --grain lower. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: var(--grain, 0.09);
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
 /* Loader gate (see src/lib/loader.ts). Shown from first paint until the gate says "off",
    so first visits never flash the finished hero. If JS never runs, a CSS failsafe clears it after 4s. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   html:not([data-intro="off"]) .loader {
     display: flex;
   }
+  /* CSS-driven so it starts at first paint and never waits for hydration: a 0.6 s red wipe, no count. */
+  html[data-intro="on"] .loader {
+    animation: loader-wipe 0.6s var(--ease-in-out) 0.1s both;
+  }
   html:not([data-intro]) .loader {
     animation: intro-failsafe-hide 0s 4s forwards;
+  }
+}
+@keyframes loader-wipe {
+  to {
+    clip-path: inset(0 0 100% 0);
   }
 }
 @keyframes intro-failsafe-hide {
@@ -122,9 +182,9 @@ body {
   inset: 0;
   z-index: 100;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: flex-start;
   padding: var(--space-gutter);
-  background: var(--color-ink);
+  background: var(--color-red-field);
   color: var(--color-paper);
   clip-path: inset(0 0 0 0);
   pointer-events: none; /* never blocks clicks or scrolling underneath */
@@ -208,18 +268,18 @@ body {
 .portfolio-title {
   position: relative;
   isolation: isolate;
-  font-family: var(--font-anton), "Arial Narrow", sans-serif;
-  font-size: var(--text-display-xl);
-  line-height: 0.85;
-  letter-spacing: 0.04em;
+  font-size: clamp(3.5rem, 0.5rem + 15vw, 17rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
 }
 .portfolio-title-ghost {
   position: absolute;
   inset: 0;
   z-index: -1;
-  color: var(--color-ink);
-  opacity: 0.2;
+  color: currentColor;
+  opacity: 0.22;
   filter: blur(0.08em);
   transform: translateX(0.12em);
   animation: ghost-drift 5s var(--ease-in-out) infinite alternate;
@@ -252,5 +312,5 @@ body {
 }
 .work-row:is(:hover, :focus-visible) .work-row-title {
   transform: translateX(0.15em);
-  color: var(--color-red);
+  color: var(--color-red); /* 5.3:1 on ink */
 }

@@ -266,7 +266,14 @@ export default function Gallery() {
     <div className="flex flex-col gap-4">
       <div ref={root} className="gallery">
         {tiles.map((p, i) => (
-          <Link key={i} href={`/work/${p.slug}`} onClick={() => setFlying(i)} className="gallery-tile">
+          // Repeats stay clickable but out of the tab order and a11y tree, so keyboard users get each project once.
+          <Link
+            key={i}
+            href={`/work/${p.slug}`}
+            onClick={() => setFlying(i)}
+            className="gallery-tile"
+            {...(i >= covers.length && { tabIndex: -1, "aria-hidden": true })}
+          >
             {/* Covers repeat across tiles and names must be unique, so only the clicked tile gets one. */}
             <ViewTransition name={flying === i ? `cover-${p.slug}` : undefined} share="morph" default="none">
               <Image src={p.cover!} alt={p.title} fill sizes="96px" loading="eager" className="object-cover" />
@@ -283,7 +290,7 @@ export default function Gallery() {
             type="button"
             aria-pressed={active === name}
             onClick={() => pick.current?.(name)}
-            className={`border border-ink px-3 py-1.5 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper ${name === "scatter" ? "max-md:hidden" : ""}`}
+            className={`min-h-11 border border-ink px-3 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper ${name === "scatter" ? "max-md:hidden" : ""}`}
           >
             {name}
           </button>
@@ -291,7 +298,7 @@ export default function Gallery() {
         <button
           type="button"
           onClick={() => toggle.current?.()}
-          className="border border-ink px-3 py-1.5 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red motion-reduce:hidden"
+          className="min-h-11 border border-ink px-3 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red motion-reduce:hidden"
         >
           {playing ? "Pause" : "Play"}
           <span className="sr-only"> gallery motion</span>

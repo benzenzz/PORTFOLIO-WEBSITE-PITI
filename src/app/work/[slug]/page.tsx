@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return workProjects.map((p) => ({ slug: p.slug }));
 }
 
-const label = "text-xs uppercase tracking-widest";
+const label = "font-mono text-xs uppercase tracking-widest";
 // Poster frames sit next to each clip (same name, .jpg), made with ffmpeg.
 const posterOf = (src: string) => src.replace(/\.mp4$/, ".jpg");
 const num = (i: number) => String(i + 1).padStart(2, "0");
@@ -44,7 +44,7 @@ function Lead({ project }: { project: Project }) {
 
 const Block = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="grid gap-3 border-t border-line pt-4 md:grid-cols-[12rem_1fr]">
-    <RevealText as="h2" className="font-display text-2xl uppercase leading-none">
+    <RevealText as="h2" className="text-2xl font-extrabold uppercase leading-none tracking-tight">
       {title}
     </RevealText>
     <div className="max-w-prose">{children}</div>
@@ -73,8 +73,8 @@ async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params
 
   return (
     <main className="px-gutter py-section">
-      <div className={`${label} flex justify-between`}>
-        <Link href="/#work" className="hover:text-red focus-visible:text-red">
+      <div className={`${label} flex items-center justify-between`}>
+        <Link href="/#work" className="inline-flex min-h-11 items-center hover:text-red-text focus-visible:text-red-text">
           ← Portfolio
         </Link>
         <span className="text-gray">
@@ -83,7 +83,7 @@ async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params
       </div>
 
       <header className="mt-8 flex flex-col gap-4">
-        <RevealText as="h1" trigger="load" className="text-balance break-words font-display text-display-lg uppercase leading-[0.92]">
+        <RevealText as="h1" trigger="load" className="text-balance break-words text-display-lg font-extrabold uppercase leading-[0.85] tracking-[-0.04em]">
           {project.title}
         </RevealText>
         <p className="max-w-prose text-lg">{project.summary}</p>
@@ -139,7 +139,7 @@ async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params
 
       {(rest.length > 0 || moreVideos.length > 0) && (
         <section className="mt-section">
-          <RevealText as="h2" className="font-display text-display-md uppercase leading-none">
+          <RevealText as="h2" className="text-display-md font-extrabold uppercase leading-none tracking-[-0.03em]">
             {tier === "A" ? "Deliverables" : "More"}
           </RevealText>
           <ul className="mt-8 columns-1 gap-4 md:columns-2 [&>li]:mb-4 [&>li]:break-inside-avoid">
@@ -171,7 +171,7 @@ async function CaseStudy({ params }: { params: PageProps<"/work/[slug]">["params
       <Link href={`/work/${next.slug}`} className="group mt-section flex items-end justify-between gap-6 border-t border-ink pt-6">
         <span>
           <span className={`${label} text-gray`}>Next project</span>
-          <span className="mt-2 block font-display text-display-md uppercase leading-none transition-colors duration-[var(--duration-fast)] group-hover:text-red group-focus-visible:text-red">
+          <span className="mt-2 block text-display-md font-extrabold uppercase leading-none tracking-[-0.03em] transition-colors duration-[var(--duration-fast)] group-hover:text-red-text group-focus-visible:text-red-text">
             {next.title} →
           </span>
         </span>
