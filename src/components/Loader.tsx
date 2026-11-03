@@ -22,7 +22,7 @@ export default function Loader() {
       };
 
       const n = { v: 0 };
-      // Total 1.8s; the hero gallery starts cycling when it ends.
+      // Total 0.8s; the hero gallery starts cycling when it ends.
       gsap
         .timeline({ onComplete: finish })
         .to(n, {

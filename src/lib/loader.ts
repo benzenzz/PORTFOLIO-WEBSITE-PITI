@@ -2,7 +2,7 @@
 // CSS shows the loader while it is not "off", so a first visit never flashes the finished page.
 export const LOADER_DONE = "loader:done";
 // Seconds.
-export const LOADER_TIMING = { count: 1.2, reveal: 0.6 };
+export const LOADER_TIMING = { count: 0.5, reveal: 0.3 };
 
 export const introOn = () => document.documentElement.dataset.intro === "on";
 

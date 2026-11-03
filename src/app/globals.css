@@ -202,3 +202,55 @@ body {
     display: none;
   }
 }
+
+/* "PORTFOLIO" section title: a blurred, drifting ghost behind the word (moodboard motion blur).
+   The ghost is aria-hidden; reduced motion keeps it still. */
+.portfolio-title {
+  position: relative;
+  isolation: isolate;
+  font-family: var(--font-anton), "Arial Narrow", sans-serif;
+  font-size: var(--text-display-xl);
+  line-height: 0.85;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.portfolio-title-ghost {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--color-ink);
+  opacity: 0.2;
+  filter: blur(0.08em);
+  transform: translateX(0.12em);
+  animation: ghost-drift 5s var(--ease-in-out) infinite alternate;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes ghost-drift {
+  to {
+    transform: translateX(-0.06em);
+    opacity: 0.12;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-title-ghost {
+    animation: none;
+  }
+}
+
+/* Work tiles and rows: a small image push and title shift; the image always returns to its plain state. */
+.work-media {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+:is(.work-tile, .work-row):is(:hover, :focus-visible) .work-media {
+  transform: scale(1.04);
+}
+.work-row-title {
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+.work-row:is(:hover, :focus-visible) .work-row-title {
+  transform: translateX(0.15em);
+  color: var(--color-red);
+}

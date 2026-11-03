@@ -3,7 +3,7 @@
 import { useRef, useState, ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { projects } from "@/content/projects";
+import { workProjects } from "@/content/projects";
 import { gsap, useGSAP, EASE, MOTION_QUERIES } from "@/lib/gsap";
 import { whenLoaderDone } from "@/lib/loader";
 
@@ -17,7 +17,7 @@ type Layout = (typeof LAYOUTS)[number];
 type Pose = { x: number; y: number; rotation: number; scale: number };
 
 // Covers repeat to fill every tile.
-const covers = projects.filter((p) => p.cover);
+const covers = workProjects.filter((p) => p.cover);
 const tiles = Array.from({ length: COUNT }, (_, i) => covers[i % covers.length]);
 
 // mulberry32: same seed → same scatter on every visit.

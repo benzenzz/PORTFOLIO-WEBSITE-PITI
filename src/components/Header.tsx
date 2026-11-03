@@ -6,9 +6,11 @@ import { ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 const LINKS = [
   ["Work", "/#work"],
+  ["Playground", "/playground"],
   ["About", "/#about"],
   ["Contact", "/#contact"],
 ];
+const num = (i: number) => String(i + 1).padStart(2, "0");
 
 const linkClass = "uppercase transition-colors duration-[var(--duration-fast)] hover:text-red";
 
@@ -38,9 +40,10 @@ export default function Header() {
       </Link>
       <nav aria-label="Main" className="max-md:hidden">
         <ul className="flex gap-6">
-          {LINKS.map(([label, href]) => (
+          {LINKS.map(([label, href], i) => (
             <li key={href}>
               <Link href={href} className={`${linkClass} tracking-widest`}>
+                <span className="mr-1.5 text-gray">{num(i)}</span>
                 {label}
               </Link>
             </li>
@@ -58,9 +61,10 @@ export default function Header() {
           </button>
           <nav aria-label="Main" className="my-auto">
             <ul className="flex flex-col gap-4">
-              {LINKS.map(([label, href]) => (
+              {LINKS.map(([label, href], i) => (
                 <li key={href}>
                   <Link href={href} onClick={close} className={`${linkClass} font-display text-display-lg leading-none`}>
+                    <span className="mr-3 align-top font-sans text-xs tracking-widest text-paper/60">{num(i)}</span>
                     {label}
                   </Link>
                 </li>

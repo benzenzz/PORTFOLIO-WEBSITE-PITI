@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import RevealText from "@/components/RevealText";
 import { site, filled } from "@/content/site";
+import { CvLink } from "@/components/About";
 
 const pill =
   "border border-paper px-4 py-2 text-xs uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red";
@@ -23,6 +24,7 @@ export default function Contact() {
       <RevealText as="h2" className="text-xs uppercase tracking-widest">
         Contact
       </RevealText>
+      <p className="mt-6 max-w-prose text-lg">Open to {site.seeking} roles.</p>
       {filled(site.email) ? (
         <a
           href={`mailto:${site.email}`}
@@ -44,7 +46,11 @@ export default function Contact() {
         ) : (
           <span className="px-4 py-2 text-xs uppercase tracking-widest">LinkedIn: {site.linkedin}</span>
         )}
+        <CvLink className={filled(site.cv) ? pill : "px-4 py-2 text-xs uppercase tracking-widest"} />
       </div>
+      <p className="mt-8 text-xs uppercase tracking-widest text-paper/70">
+        {site.city} ({site.timezone}) · Remote · {site.availability}
+      </p>
       <p role="status" className="sr-only">
         {copied ? "Email copied to clipboard" : ""}
       </p>
