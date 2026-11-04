@@ -123,8 +123,6 @@ export const GROUPS = { event: "Event Campaigns", social: "Social & Digital" } a
 
 /** Projects on the homepage and with a case-study page. */
 export const workProjects = projects.filter((p) => p.group === "event" || p.group === "social");
-/** Homepage count in the hero ("05 selected projects"). */
-export const featured = workProjects;
 export const playground = projects.filter((p) => p.group === "playground");
 
 /** Still image for a project: its cover, else the first YouTube thumbnail. */
