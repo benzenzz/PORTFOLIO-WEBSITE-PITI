@@ -1,15 +1,17 @@
+import HeroVideo from "@/components/HeroVideo";
 import RevealText from "@/components/RevealText";
 import { site } from "@/content/site";
 import { featured } from "@/content/projects";
 
-const label = "font-mono text-xs uppercase tracking-widest text-gray";
+const label = "font-mono text-xs uppercase tracking-widest text-paper/80";
 const pad = (n: number) => String(n).padStart(2, "0");
 
 // Every label here is derived from content config (name, role, capabilities, project count): no invented biography.
 // Gallery.tsx is kept for rollback; the Selected Work stage below is now the work-discovery experience.
 export default function Hero() {
   return (
-    <section data-surface="paper" className="grain flex min-h-svh flex-col overflow-x-clip px-gutter pb-gutter pt-20 [--grain:0.05]">
+    <section data-surface="ink" className="grain relative isolate flex min-h-svh flex-col overflow-x-clip bg-ink px-gutter pb-gutter pt-20 text-paper [--grain:0.05]">
+      <HeroVideo />
       <div aria-hidden className={`${label} flex justify-between gap-6`}>
         <span>(01) Introduction</span>
         <span>
@@ -39,14 +41,14 @@ export default function Hero() {
           <ol aria-label="Disciplines" className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
             {site.capabilities.map((c, i) => (
               <li key={c} className="flex gap-2 uppercase tracking-widest">
-                <span className="font-mono text-gray">{pad(i + 1)}</span>
+                <span className="font-mono text-paper/80">{pad(i + 1)}</span>
                 {c}
               </li>
             ))}
           </ol>
           <a
             href="#work"
-            className="group inline-flex min-h-11 items-center gap-2 self-start border-b-2 border-ink text-base font-semibold uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red-text hover:text-red-text"
+            className="group inline-flex min-h-11 items-center gap-2 self-start border-b-2 border-paper text-base font-semibold uppercase tracking-widest transition-colors duration-[var(--duration-fast)] hover:border-red hover:text-red"
           >
             View selected work
             <span aria-hidden className="transition-transform duration-[var(--duration-fast)] group-hover:translate-y-1">
