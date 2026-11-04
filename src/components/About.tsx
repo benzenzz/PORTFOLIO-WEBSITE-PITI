@@ -1,9 +1,15 @@
+import Image from "next/image";
+import Link from "next/link";
 import CountUp from "@/components/CountUp";
 import RevealText from "@/components/RevealText";
-import { site } from "@/content/site";
+import { site, filled } from "@/content/site";
+import { projects } from "@/content/projects";
 
 const label = "font-mono text-xs uppercase tracking-widest text-gray";
 const pad = (n: number) => String(n).padStart(2, "0");
+const titleOf = (slug: string) => projects.find((p) => p.slug === slug)?.title ?? slug;
+const workLink =
+  "inline-flex min-h-11 items-center underline decoration-ink underline-offset-4 transition-colors duration-[var(--duration-fast)] hover:text-red-text hover:decoration-red-text";
 
 const Row = ({ n, title, children }: { n: number; title: string; children: React.ReactNode }) => (
   <div className="grid gap-3 border-b border-line py-5 sm:grid-cols-[11rem_1fr]">
@@ -31,24 +37,24 @@ export default function About() {
           <RevealText as="p" split="words" className="mt-8 max-w-[32ch] text-balance text-lg leading-snug">
             {site.intro}
           </RevealText>
+          {/* Portrait: grayscale to sit with the monochrome system. */}
+          <div className="relative mt-10 aspect-[4/5] w-full max-w-sm overflow-hidden bg-ink/5">
+            {filled(site.portrait) ? (
+              <Image src={site.portrait} alt={site.name} fill sizes="(min-width: 768px) 24rem, 100vw" className="object-cover grayscale" />
+            ) : (
+              <span className={`${label} absolute inset-0 grid place-items-center`}>{site.portrait}</span>
+            )}
+          </div>
         </div>
 
         <dl className="border-t border-ink md:col-span-7">
-          <Row n={1} title="Work categories">
-            <ul className="flex flex-wrap gap-x-4 gap-y-1">
-              {site.capabilities.map((c) => (
-                <li key={c}>{c}</li>
-              ))}
-            </ul>
+          <Row n={1} title="Open to">
+            <p className="font-bold tracking-tight">{site.seeking}</p>
+            <p className="mt-1">
+              {site.city} ({site.timezone}) · Remote · {site.availability}
+            </p>
           </Row>
-          <Row n={2} title="Tools">
-            <ul className="flex flex-wrap gap-x-4 gap-y-1">
-              {site.tools.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          </Row>
-          <Row n={3} title="Highlights">
+          <Row n={2} title="Highlights">
             <ul className="flex flex-col gap-10">
               {site.highlights.map((h) => (
                 <li key={h.title}>
@@ -73,18 +79,61 @@ export default function About() {
                   </dl>
                   <p className="mt-4 max-w-prose">{h.body}</p>
                   {h.note && <p className="mt-1 max-w-prose text-sm text-gray">{h.note}</p>}
+                  {h.slug && (
+                    <Link href={`/work/${h.slug}`} className={`${workLink} text-xs uppercase tracking-widest`}>
+                      See the work →
+                    </Link>
+                  )}
+                </li>
+              ))}
+              {site.more.map((m) => (
+                <li key={m.title}>
+                  <p className="font-bold tracking-tight">{m.title}</p>
+                  <p className="mt-1 max-w-prose">{m.body}</p>
+                  <Link href={`/work/${m.slug}`} className={`${workLink} text-xs uppercase tracking-widest`}>
+                    See the work →
+                  </Link>
                 </li>
               ))}
             </ul>
           </Row>
-          <Row n={4} title="Background">
+          <Row n={3} title="Work categories">
+            {/* Each category links to the projects that show it. */}
+            <ul className="flex flex-col">
+              {site.capabilities.map((c) => (
+                <li key={c} className="flex flex-wrap items-baseline gap-x-4">
+                  <span className="min-w-28 font-bold tracking-tight">{c}</span>
+                  {(site.proof[c] ?? []).map((slug) => (
+                    <Link key={slug} href={`/work/${slug}`} className={`${workLink} text-sm`}>
+                      {titleOf(slug)}
+                    </Link>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={4} title="How I work">
+            <ol className="flex list-decimal flex-col gap-1 pl-5">
+              {site.howIWork.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </Row>
+          <Row n={5} title="Tools">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1">
+              {site.tools.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </Row>
+          <Row n={6} title="Background">
             <ul className="flex flex-col gap-1">
               {site.background.map((b) => (
                 <li key={b}>{b}</li>
               ))}
             </ul>
           </Row>
-          <Row n={5} title="Websites">
+          <Row n={7} title="Websites">
             <ul className="flex flex-col">
               {site.sites.map(([name, url]) => (
                 <li key={url}>

@@ -8,6 +8,7 @@ import { site } from "@/content/site";
 
 const LINKS = [
   ["Work", "/#work"],
+  ["Playground", "/playground"],
   ["About", "/#about"],
   ["Contact", "/#contact"],
 ];
@@ -68,7 +69,7 @@ export default function Header() {
         <ul className="flex gap-6">
           {LINKS.map(([label, href]) => (
             <li key={href}>
-              <Link href={href} aria-current={current === href.slice(2) ? "location" : undefined} className={`${linkClass} tracking-widest`}>
+              <Link href={href} aria-current={(href.startsWith("/#") ? current === href.slice(2) : pathname === href) ? "location" : undefined} className={`${linkClass} tracking-widest`}>
                 {label}
               </Link>
             </li>

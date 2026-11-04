@@ -12,6 +12,7 @@ const channels = [
   ["Email", site.email, `mailto:${site.email}`],
   ["LinkedIn", site.linkedin, site.linkedin],
   ["Instagram", site.instagram, site.instagram],
+  ["CV", site.cv, site.cv],
 ] as const;
 
 export default function Contact() {
@@ -33,9 +34,12 @@ export default function Contact() {
         <span>(04) Contact</span>
         <span>{site.wordmark}</span>
       </div>
-      <RevealText as="h2" className="mb-12 mt-12 text-[length:clamp(3rem,0.5rem+14vw,13rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.05em]">
+      <RevealText as="h2" className="mb-8 mt-12 text-[length:clamp(3rem,0.5rem+14vw,13rem)] font-extrabold uppercase leading-[0.82] tracking-[-0.05em]">
         Contact
       </RevealText>
+      <p className="mb-12 max-w-[40ch] text-balance text-lg leading-snug">
+        Open to {site.seeking} roles. {site.city} ({site.timezone}) · Remote · {site.availability}.
+      </p>
 
       {rows.length > 0 ? (
         <ul className="mt-auto border-t border-paper">
@@ -46,11 +50,11 @@ export default function Contact() {
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3 md:col-span-9">
                   <a
                     href={href}
-                    {...(name !== "Email" && { target: "_blank", rel: "noopener noreferrer" })}
+                    {...(name === "CV" ? { download: true } : name !== "Email" && { target: "_blank", rel: "noopener noreferrer" })}
                     className="break-words text-[length:clamp(1.5rem,1rem+2.5vw,3.25rem)] font-extrabold leading-tight tracking-tight underline decoration-transparent decoration-2 underline-offset-8 transition-colors duration-[var(--duration-fast)] hover:decoration-paper"
                   >
-                    {name === "Email" ? value : `${value.replace(/^https?:\/\/(www\.)?/, "")} ↗`}
-                    {name !== "Email" && <span className="sr-only"> (opens in a new tab)</span>}
+                    {name === "Email" ? value : name === "CV" ? "Download CV ↓" : `${value.replace(/^https?:\/\/(www\.)?/, "")} ↗`}
+                    {name !== "Email" && name !== "CV" && <span className="sr-only"> (opens in a new tab)</span>}
                   </a>
                   {name === "Email" && (
                     <button

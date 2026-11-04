@@ -136,16 +136,6 @@ body {
   animation-timing-function: var(--ease-in-out);
 }
 
-/* Selected Work stage (SelectedWork.tsx). Items show only while data-active; GSAP animates the hand-over,
-   so with reduced motion or no JS the switch is instant. */
-.stage-item {
-  opacity: 0;
-  visibility: hidden;
-}
-.stage-item[data-active] {
-  opacity: 1;
-  visibility: visible;
-}
 /* Static grain on interface surfaces. z-index -1 inside an isolated section: above the background,
    below every child, so text and project media are never covered. Paper sections set --grain lower. */
 .grain {
@@ -271,4 +261,56 @@ body {
   .gallery-controls {
     display: none;
   }
+}
+
+/* "PORTFOLIO" section title: a blurred, drifting ghost behind the word (moodboard motion blur).
+   The ghost is aria-hidden; reduced motion keeps it still. */
+.portfolio-title {
+  position: relative;
+  isolation: isolate;
+  font-size: clamp(3.5rem, 0.5rem + 15vw, 17rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+.portfolio-title-ghost {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: currentColor;
+  opacity: 0.22;
+  filter: blur(0.08em);
+  transform: translateX(0.12em);
+  animation: ghost-drift 5s var(--ease-in-out) infinite alternate;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes ghost-drift {
+  to {
+    transform: translateX(-0.06em);
+    opacity: 0.12;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-title-ghost {
+    animation: none;
+  }
+}
+
+/* Work tiles and rows: a small image push and title shift; the image always returns to its plain state. */
+.work-media {
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+:is(.work-tile, .work-row):is(:hover, :focus-visible) .work-media {
+  transform: scale(1.04);
+}
+.work-row-title {
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+.work-row:is(:hover, :focus-visible) .work-row-title {
+  transform: translateX(0.15em);
+  color: var(--color-red); /* 5.3:1 on ink */
 }

@@ -6,7 +6,8 @@ export type Metric = {
   suffix?: string;
   label: string;
 };
-export type Highlight = { title: string; period?: string; metrics: Metric[]; body: string; note?: string };
+/** `slug` links the highlight to the project page that shows the work. */
+export type Highlight = { title: string; period?: string; metrics: Metric[]; body: string; note?: string; slug?: string };
 
 export const site = {
   name: "Demi Phan",
@@ -16,6 +17,16 @@ export const site = {
   email: "[Add email]",
   linkedin: "[Add LinkedIn URL]",
   instagram: "[Add Instagram URL]",
+  /** Public path of the CV PDF once added to public/. */
+  cv: "[Add CV.pdf]",
+  /** Public path of the portrait once Portrait.png is added to public/. */
+  portrait: "[Add Portrait.png]",
+
+  // Remote-hiring facts (owner's answers).
+  city: "Ho Chi Minh City",
+  timezone: "GMT+7",
+  availability: "Available from Dec 2026",
+  seeking: "Creative Video Editor / Creative Assistant",
   intro:
     "A creative-driven, detail-oriented student with hands-on experience in video editing, motion graphics, and visual storytelling.",
   // Curated and owner-approved; every figure checked against reference/[RESUME] PITI STH.docx (2026-10-27).
@@ -31,6 +42,7 @@ export const site = {
       ],
       body: "Led creative concepts and campaign communications across social media, website and event touchpoints.",
       note: "Campaign content ran on Creatio’s 48K+ follower fanpage. Nationwide marketing competition: 3,087 participants, 1,029 teams, 80 universities.",
+      slug: "videography",
     },
     {
       title: "Digital Experience",
@@ -59,14 +71,19 @@ export const site = {
       body: "Semi-finalist, placing in the Top 20 among 190+ participants nationwide. Developed a six-month, VND 5B IMC campaign and produced a TVC for Panasonic Electric Works Vietnam.",
     },
   ] as Highlight[],
+  /** Video work outside the highlights above. */
+  more: [{ title: "Ngoc Ho Medicare", body: "Video editor — long- and short-form video for the YouTube channel. [Period]", slug: "ngoc-ho-medicare" }],
+  howIWork: ["[Step 1: how I read a brief]", "[Step 2: rough cut → feedback]", "[One skill I taught myself for a project]"],
   background: [
     "Creative member, Creatio — November 2024 – August 2026",
     "Foreign Trade University — International Business Economics (expected 2028)",
     "English — IELTS 7.0",
   ],
   // Portfolio categories from the content-raw/ folders — not verified skill claims.
-  // Photography is omitted: photography-only projects are not part of the homepage selection.
-  capabilities: ["Design", "Animation", "VFX", "Videography", "Handy craft"],
+  // Video first, then VFX, then design (owner's priority). Photography and Handy craft are no longer shown.
+  capabilities: ["Videography", "VFX", "Animation", "Design"],
+  /** Project pages that show each category. */
+  proof: { Videography: ["videography", "ngoc-ho-medicare"], VFX: ["vfx"], Animation: ["animation"], Design: ["ma26-design"] } as Record<string, string[]>,
   tools: ["Photoshop", "Premiere Pro", "After Effects", "WordPress", "HTML/CSS", "Codex / Generative AI Tools"],
   sites: [
     ["creatioftu2.com", "https://creatioftu2.com"],
